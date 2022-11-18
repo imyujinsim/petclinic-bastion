@@ -66,11 +66,15 @@ pipeline {
             	    "AWS_SECRET_ACCESS_KEY=${creds.SecretAccessKey}",
             	    "AWS_SESSION_TOKEN=${creds.SessionToken}"
           	]) {
-            		sh """
-              		aws sts get-caller-identity
-            		"""
+		        withAWS(role: 'ecr', roleAccount: '${ACCOUNT_ID}', externalId: 'externalId') {
+                    		sh"""
+                    		    aws sts get-caller-dentity
+				"""
+                	}
+
         	}
-      	    }
+	    }
+
     	}	
 
         stage('Git Clone from gitSCM') {

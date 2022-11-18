@@ -6,7 +6,7 @@ def getCredentialsId() {
     return env.BUILD_USER_ID
 }
 
-def assumeRole(String credentials:"aws", String userName,
+def assumeRole(String credentials, String userName,
   String accountId = "YOUR_AWS_ACCOUNT_ID", String role = "role_to_be_assumed") {
   def String trustedAccount = "YOUR_AWS_ACCOUNT_ID"
 

@@ -23,7 +23,7 @@ pipeline {
                             url: 'https://github.com/imyujinsim/petclinic-bastion'
                         sh "ls -lat"
                         env.cloneResult=true
-			sh "aws sts get-session-token --serial-number arn:aws:iam::851557167064:mfa/btc043 --token-code 119134 > test" 
+			sh "aws sts get-session-token --serial-number arn:aws:iam::851557167064:mfa/btc043 --token-code 104789 > test" 
                         
                     } catch (error) {
                         print(error)
@@ -47,9 +47,9 @@ pipeline {
                         mkdir deploy
                         java -version
                         """
-			sh "export AWS_ACCESS_KEY_ID=$(grep AccessKeyId test | cut -c 25-44)"
-			sh "export AWS_SECRET_ACCESS_KEY=$(grep Secret test | cut -c 29-68)"
-			sh "export AWS_SESSION_TOKEN=$(grep Token test | cut -c 26-701)"
+			sh "export AWS_ACCESS_KEY_ID=${grep AccessKeyId test | cut -c 25-44}"
+			sh "export AWS_SECRET_ACCESS_KEY=${grep Secret test | cut -c 29-68}"
+			sh "export AWS_SESSION_TOKEN=${grep Token test | cut -c 26-701}"
                         // sh "sed -i 's/  version:.*/  version: \${VERSION:v${env.BUILD_NUMBER}}/g' /var/lib/jenkins/workspace/${env.JOB_NAME}/src/main/resources/application.yaml"
                         // sh "cat /var/lib/jenkins/workspace/${env.JOB_NAME}/src/main/resources/application.yaml"
                         sh './mvnw package'

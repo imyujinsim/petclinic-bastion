@@ -1,3 +1,42 @@
+def getAWSUser() {
+  wrap([$class: "BuildUser"]) {
+    return env.BUILD_USER_ID
+  }
+}
+
+def getCredentialsId() {
+  wrap([$class: "BuildUser"]) {
+    return env.BUILD_USER_ID
+  }
+}
+
+def assumeRole(String credentials, String userName,
+  String accountId = "YOUR_AWS_ACCOUNT_ID", String role = "role_to_be_assumed") {
+  def String trustedAccount = "YOUR_AWS_ACCOUNT_ID"
+
+  def mfa = input(
+    message: "Enter MFA Token",
+    parameters: [[$class: 'StringParameterDefinition', name: 'mfa', trim: true]]
+  )
+
+  withCredentials([[
+    $class: 'AmazonWebServicesCredentialsBinding',
+    credentialsId: "${credentials}",
+    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+  ]]) {
+    return sh(script: """
+      aws sts assume-role \
+        --role-arn arn:aws:iam::851557167064:role/ecr \
+        --serial-number arn:aws:iam::851557167064:mfa/btc043 \
+        --query 'Credentials' \
+        --token-code ${mfa} \
+        --role-session-name ${userName}
+    """, returnStdout: true)
+  }
+}
+
+
 pipeline {
     agent any
 
@@ -14,6 +53,30 @@ pipeline {
     }
 
     stages {
+	stage('credentials') {
+     	    steps {
+                script {
+                    jsonCreds = assumeRole("${credentialsId}", "${AWSUser}")
+                    creds = readJSON text: "${jsonCreds}"
+         	}       
+		
+            }
+        }
+
+	stage('Use credentials') {
+            steps {
+        	withEnv([
+            	    "AWS_ACCESS_KEY_ID=${creds.AccessKeyId}",
+            	    "AWS_SECRET_ACCESS_KEY=${creds.SecretAccessKey}",
+            	    "AWS_SESSION_TOKEN=${creds.SessionToken}"
+          	]) {
+            		sh """
+              		aws sts get-caller-identity
+            		"""
+        	}
+      	    }
+    	}	
+
         stage('Git Clone from gitSCM') {
             steps {
                 script {
@@ -23,7 +86,7 @@ pipeline {
                             url: 'https://github.com/imyujinsim/petclinic-bastion'
                         sh "ls -lat"
                         env.cloneResult=true
-                        
+                      
                     } catch (error) {
                         print(error)
                         env.cloneResult=false

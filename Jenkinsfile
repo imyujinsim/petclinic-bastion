@@ -21,7 +21,7 @@ def assumeRole(String credentials, String userName,
     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
   ]]) {
-    return aws(role: 'ecr', roleAccount: '${ACCOUNT_ID}', externalId: 'externalId') {
+    return aws(roleArn: 'arn:aws:iam::851557167064:role/ecr', roleAccount: '${ACCOUNT_ID}', credentialsId: 'aws')) {
                                 sh"""
                                     aws sts get-caller-dentity
                                 """
@@ -64,7 +64,7 @@ pipeline {
             	    "AWS_SECRET_ACCESS_KEY=${creds.SecretAccessKey}",
             	    "AWS_SESSION_TOKEN=${creds.SessionToken}"
           	]) {
-		        aws(role: 'ecr', roleAccount: '${ACCOUNT_ID}', externalId: 'externalId') {
+		        aws(roleArn: 'arn:aws:iam::851557167064:role/ecr', roleAccount: '${ACCOUNT_ID}', credentialsId: 'aws') {
                     		sh"""
                     		    aws sts get-caller-dentity
 				"""

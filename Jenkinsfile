@@ -86,7 +86,7 @@ EOF"""
                             image.push()
                         }
                         
-                        echo 'Remove Deploy Files'
+                        echo 'success-remove Deploy Files'
                         sh "sudo rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*"
                         env.dockerBuildResult=true
                     } catch (error) {

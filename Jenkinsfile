@@ -46,9 +46,6 @@ pipeline {
                         mkdir deploy
                         java -version
                         """
-			sh 'export AWS_ACCESS_KEY_ID=ASIA4MRGDF7MJQPBNZFB'
-			sh "export AWS_SECRET_ACCESS_KEY=qe4XppwFSdy0pl18SP5bRAfHRLCqeeWCQ7WXEr2n"
-			sh "export AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjEDwaDmFwLW5vcnRoZWFzdC0yIkcwRQIhALfK4XSXsnHjgBfOk/iPpyAlb3zRY1HpKnlLKz72el0CAiB1J9ehEjSpln+rrIh4AjAva2R0QI5wJJKbPAhhNtQsfyrvAQhFEAEaDDg1MTU1NzE2NzA2NCIM9Iaw0ce0XwFtCYnEKswBjYIXDTto7qU8ZGAIMTbrK1Uhx6GczL4JOaj8KgtvhqLizv71AzN4OfyjhQKpiRg5ocjTTp5GTCYFipyuRVdVqokREgEjrO4nOezN6pVVHU3uB4hGGUvINFhlK2kFVR7QOb3Mhd2sZcQpN0DIoE7BfuABUzqj6auKRwGaz6orx7zxXJLH2JLZcXAN1VRQQb4k3VzfD6/OkYz4be2TyEKvUt/SXD7LQtJwPZpYLYDmVDjOa9HDf9m68X4zmB5Ht77qGmVRvKMn0TnDFuN7MJbv3ZsGOpgBlAyMsSUKwiV6GcWg/UgEP/BYkLbv1Ny7r3cP5FtNBO+GUfjTnNxnVH866E/tfmZQ2jOuMYxONkUPUSjtXYfuzhdYApc54Z9Cf/5AReg3a3Hdhcxny6QCA8vtx9UfnzyTlCPC/kiyRm7BEkqK1aVRa8wH+8T/OJqZzz48hqwGVBlLUidFrKjyIzHDJSQ6n4EKn9srNpJQ9hk="
                         // sh "sed -i 's/  version:.*/  version: \${VERSION:v${env.BUILD_NUMBER}}/g' /var/lib/jenkins/workspace/${env.JOB_NAME}/src/main/resources/application.yaml"
                         // sh "cat /var/lib/jenkins/workspace/${env.JOB_NAME}/src/main/resources/application.yaml"
                         sh './mvnw package'

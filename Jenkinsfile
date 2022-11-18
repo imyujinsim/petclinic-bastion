@@ -1,13 +1,9 @@
 def getAWSUser() {
-  wrap([$class: "BuildUser"]) {
     return env.BUILD_USER_ID
-  }
 }
 
 def getCredentialsId() {
-  wrap([$class: "BuildUser"]) {
     return env.BUILD_USER_ID
-  }
 }
 
 def assumeRole(String credentials, String userName,

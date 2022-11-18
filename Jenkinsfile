@@ -21,16 +21,16 @@ def assumeRole(String credentials, String userName,
     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
   ]]) {
-    return sh(script: """
-      aws sts assume-role \
-        --role-arn arn:aws:iam::851557167064:role/ecr \
-        --serial-number arn:aws:iam::851557167064:mfa/btc043 \
-        --query 'Credentials' \
-        --token-code ${mfa} \
-        --role-session-name ${userName}
-    """, returnStdout: true)
+    return withAWS(role: 'ecr', roleAccount: '${ACCOUNT_ID}', externalId: 'externalId') {
+		withAWS(role: 'ecr', roleAccount: '${ACCOUNT_ID}', externalId: 'externalId') {
+                                sh"""
+                                    aws sts get-caller-dentity
+                                """
+                        }
+
+           }
   }
-}
+
 
 
 pipeline {

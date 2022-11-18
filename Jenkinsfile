@@ -17,7 +17,7 @@ def assumeRole(String credentials, String userName,
 
   withCredentials([[
     $class: 'AmazonWebServicesCredentialsBinding',
-    credentialsId: '${credentials}',
+    credentialsId: 'aws',
     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
   ]]) {

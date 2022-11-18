@@ -77,7 +77,7 @@ pipeline {
                         cat>Dockerfile<<-EOF
 FROM openjdk:11-jre-slim
 ENV JAVA_OPTS="-XX:InitialRAMPercentage=40.0 -XX:MaxRAMPercentage=80.0"
-ADD ./deploy/${ECR_IMAGE}.jar /home/${ECR_IMAGE}.jar
+ADD ./${ECR_IMAGE}.jar /home/${ECR_IMAGE}.jar
 CMD nohup java -jar -Dspring.profiles.active="mysql" /home/${ECR_IMAGE}.jar 1> /dev/null 2>&1
 EXPOSE 8080
 EOF"""
@@ -87,12 +87,12 @@ EOF"""
                         }
                         
                         echo 'Remove Deploy Files'
-                        sh "sudo rm -rf /var/lib/jenkins/workspace/${env.JOB_NAME}/*"
+                        sh "sudo rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*"
                         env.dockerBuildResult=true
                     } catch (error) {
                         print(error)
                         echo 'Remove Deploy Files'
-                        sh "sudo rm -rf /var/lib/jenkins/workspace/${env.JOB_NAME}/*"
+                        sh "sudo rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*"
                         env.dockerBuildResult=false
                         currentBuild.result = 'FAILURE'
                     }

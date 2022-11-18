@@ -46,8 +46,8 @@ pipeline {
                         mkdir deploy
                         java -version
                         """
-                        sh "sed -i 's/  version:.*/  version: \${VERSION:v${env.BUILD_NUMBER}}/g' /var/lib/jenkins/workspace/${env.JOB_NAME}/src/main/resources/application.yaml"
-                        sh "cat /var/lib/jenkins/workspace/${env.JOB_NAME}/src/main/resources/application.yaml"
+                        // sh "sed -i 's/  version:.*/  version: \${VERSION:v${env.BUILD_NUMBER}}/g' /var/lib/jenkins/workspace/${env.JOB_NAME}/src/main/resources/application.yaml"
+                        // sh "cat /var/lib/jenkins/workspace/${env.JOB_NAME}/src/main/resources/application.yaml"
                         sh 'mvnw package'
                         sh """
                         cd deploy
@@ -56,8 +56,7 @@ pipeline {
                         env.mavenBuildResult=true
                     } catch (error) {
                         print(error)
-                        echo 'Remove Deploy Files'
-                        sh "sudo rm -rf /var/lib/jenkins/workspace/${env.JOB_NAME}/*"
+                        echo 'Failed to build jar file'
                         env.mavenBuildResult=false
                         currentBuild.result = 'FAILURE'
                     }

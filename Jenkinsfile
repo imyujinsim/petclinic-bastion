@@ -30,7 +30,7 @@ def assumeRole(String credentials, String userName,
 
            }
   }
-
+}
 
 
 pipeline {

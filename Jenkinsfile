@@ -21,7 +21,7 @@ def assumeRole(String credentials, String userName,
     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
   ]]) {
-	return withAWS(role: 'ecr', roleAccount: '${ACCOUNT_ID}', externalId: 'externalId') {
+	return withAWS(role: 'ecr', roleAccount: '851557167064', externalId: 'externalId') {
                                 sh"""
                                     aws sts get-caller-dentity
                                 """

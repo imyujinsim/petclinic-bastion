@@ -23,7 +23,7 @@ pipeline {
                             url: 'https://github.com/imyujinsim/petclinic-bastion'
                         sh "ls -lat"
                         env.cloneResult=true
-			sh "aws sts get-session-token --serial-number arn:aws:iam::851557167064:mfa/btc043 --token-code 104789 > test" 
+			sh "aws sts get-session-token --serial-number arn:aws:iam::851557167064:mfa/btc043 --token-code 426782 > test" 
                         
                     } catch (error) {
                         print(error)

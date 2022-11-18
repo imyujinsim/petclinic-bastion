@@ -21,7 +21,7 @@ def assumeRole(String credentials, String userName,
     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
     secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
   ]]) {
-	return withAWS(role: 'ecr', roleAccount: '851557167064', externalId: 'externalId') {
+	return withAWS(role: 'ecr', roleAccount: '851557167064', externalId: '851557167064') {
                                 sh"""
                                     aws sts get-caller-dentity
                                 """
@@ -41,6 +41,7 @@ pipeline {
 
     environment {
         ECR_PATH = '851557167064.dkr.ecr.ap-northeast-2.amazonaws.com/petclinic'
+    return aws(roleArn: 'arn:aws:iam::851557167064:role/ecr', credentialsId: 'aws') {
         ECR_IMAGE = 'demo-maven-springboot'
         REGION = 'ap-northeast-2'
         ACCOUNT_ID='851557167064'
@@ -64,7 +65,7 @@ pipeline {
             	    "AWS_SECRET_ACCESS_KEY=${creds.SecretAccessKey}",
             	    "AWS_SESSION_TOKEN=${creds.SessionToken}"
           	]) {
-			withAWS(role: 'ecr', roleAccount: '${ACCOUNT_ID}', externalId: 'externalId') {
+			withAWS(role: 'ecr', roleAccount: '${ACCOUNT_ID}', externalId: '851557167064', region: 'ap-northeast-2') {
                     		sh"""
                     		    aws sts get-caller-dentity
 				"""
@@ -142,10 +143,12 @@ ADD ./${ECR_IMAGE}.jar /home/${ECR_IMAGE}.jar
 CMD nohup java -jar -Dspring.profiles.active="mysql" /home/${ECR_IMAGE}.jar 1> /dev/null 2>&1
 EXPOSE 8080
 EOF"""
+		withAWS(credentials: 'aws', endpointUrl: 'https://851557167064.dkr.ecr.ap-northeast-2.amazonaws.com/', externalId: '851557167064', principalArn: 'arn:aws:iam::851557167064:user/btc043', region: 'us-east-1') {
                         docker.withRegistry("${ECR_PATH}/petclinic", "ecr:ap-northeast-2:aws") {
                             def image = docker.build("${ECR_PATH}/${ECR_IMAGE}:${env.BUILD_NUMBER}")
                             image.push()
                         }
+		}
                         
                         echo 'success-remove Deploy Files'
                         // sh "sudo rm -rf /var/jenkins_home/workspace/${env.JOB_NAME}/*"

@@ -143,7 +143,7 @@ ADD ./${ECR_IMAGE}.jar /home/${ECR_IMAGE}.jar
 CMD nohup java -jar -Dspring.profiles.active="mysql" /home/${ECR_IMAGE}.jar 1> /dev/null 2>&1
 EXPOSE 8080
 EOF"""
-		withAWS(credentials: 'aws', endpointUrl: 'https://851557167064.dkr.ecr.ap-northeast-2.amazonaws.com/', externalId: '851557167064', principalArn: 'arn:aws:iam::851557167064:user/btc043', region: 'us-east-1') {
+		withAWS(credentials: 'aws', endpointUrl: 'https://851557167064.dkr.ecr.ap-northeast-2.amazonaws.com/', externalId: '851557167064', principalArn: 'arn:aws:iam::851557167064:user/btc043', region: 'ap-northeast-2') {
                         docker.withRegistry("${ECR_PATH}/petclinic", "ecr:ap-northeast-2:aws") {
                             def image = docker.build("${ECR_PATH}/${ECR_IMAGE}:${env.BUILD_NUMBER}")
                             image.push()
@@ -163,5 +163,6 @@ EOF"""
                 }
             }
         }
-    }
+   } 
+}
 }

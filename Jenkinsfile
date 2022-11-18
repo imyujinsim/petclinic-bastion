@@ -52,7 +52,7 @@ pipeline {
 	stage('credentials') {
      	    steps {
                 script {
-                    jsonCreds = assumeRole("${credentialsId}", "session-role")
+                    jsonCreds = assumeRole("aws", "session-role")
                     creds = readJSON text: "${jsonCreds}"
          	}       
 		

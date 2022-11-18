@@ -22,7 +22,6 @@ pipeline {
                             credentialsId: 'GitCredential',
                             url: 'https://github.com/imyujinsim/petclinic-bastion'
                         sh "ls -lat"
-                        sh "sudo rm -rf ./.git"
                         env.cloneResult=true
                         
                     } catch (error) {
